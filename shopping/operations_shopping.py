@@ -53,7 +53,7 @@ class CREATE_SHOPPING:
 							shopping = Shopping.objects.get(invoice_number = self.data['shopping']['invoice_number'],company = self.employee.company)
 						).save()
 						print(self.employee.company)
-						inventory = Inventory.objects.get(code = "003")
+						inventory = Inventory.objects.get(code = str(j['CODIGO']).strip())
 						inventory.quanty += int(j['CANTIDAD'])
 						inventory.tax = int(j['IVA'])
 						inventory.cost = float(j['COSTO'])
@@ -77,7 +77,7 @@ class CREATE_SHOPPING:
 		except Shopping.DoesNotExist as e:
 			result = False
 		return result
-		
+
 
 
 

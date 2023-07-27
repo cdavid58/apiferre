@@ -9,6 +9,9 @@ import base64,sqlite3,json
 from PIL import Image
 from io import BytesIO
 from invoice.models import Invoice_FE
+from close_box.models import Close_Box
+from datetime import date
+from settings.models import Consecutive_POS
 
 
 @api_view(['POST'])
@@ -24,7 +27,7 @@ def Register_Employee(request):
 		employee = None
 
 	if employee is None:
-		
+
 		license = License.objects.get(company = company)
 		if license.employee >= 1:
 			try:
@@ -80,10 +83,24 @@ def Validate_Login(request):
 		employee = Employee.objects.get(user = data['user'], psswd=data['psswd'])
 		resolution = Resolution_FE.objects.get(company = employee.company)
 		result = {'result':True,'company':employee.company.pk,'employee':employee.pk,'type_employee':employee.type_employee,'prefix':resolution.prefix,'nit_company':employee.company.nit}
-
+		try:
+			c = Close_Box.objects.last()
+			if c is not None:
+				if not c.active:
+					c = None
+		except Close_Box.DoesNotExist:
+			c = None
+		if c is None:
+			Close_Box(
+				employee = employee,
+				date_open= date.today(),
+				date_close= date.today(),
+				invoice_from = Consecutive_POS.objects.last().number
+			).save()
 	except Employee.DoesNotExist:
 		result = {'result':False}
 	return Response(result)
+
 
 
 @api_view(['POST'])

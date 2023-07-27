@@ -8,7 +8,7 @@ from data.models import *
 
 class Invoice_POS(models.Model):
 	consecutive = models.IntegerField()
-	code = models.IntegerField()
+	code = models.CharField(max_length = 150)
 	description = models.CharField(max_length = 100)
 	price = models.FloatField()
 	tax = models.FloatField()
@@ -23,6 +23,8 @@ class Invoice_POS(models.Model):
 	client = models.ForeignKey(Client, on_delete=models.CASCADE)
 	company = models.ForeignKey(Company, on_delete = models.CASCADE)
 	state = models.TextField(default = "Factura Creada con éxito")
+	type_sell = models.CharField(max_length = 50,null = True,blank = True)
+	anulated = models.BooleanField(default = False)
 	
 	def __str__(self):
 		return self.company.name+' | '+str(self.consecutive)
@@ -52,4 +54,10 @@ class Wallet_POS(models.Model):
 	days_in_debt = models.IntegerField(default = 0)
 	employee = models.ForeignKey(Employee,on_delete=models.CASCADE,null=True,blank=True)
 	company = models.ForeignKey(Company, on_delete = models.CASCADE)
+	payment_form = models.CharField(max_length = 50,default="")
+	employee_close = models.ForeignKey(Employee,on_delete=models.CASCADE,null=True,blank=True,related_name='employee_close')
+	abono = models.FloatField(default = 0)
+
+	def Total(self):
+		return self.invoice.Total_Product() - self.abono
 

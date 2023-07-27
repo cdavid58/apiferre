@@ -24,6 +24,7 @@ class Invoice_FE(models.Model):
 	company = models.ForeignKey(Company, on_delete = models.CASCADE)
 	state = models.TextField(default = "Sin enviar a la DIAN")
 	cufe= models.CharField(max_length = 100,null=True,blank=True)
+	type_sell = models.CharField(max_length = 40,null=True,blank=True)
 
 	def __str__(self):
 		return self.company.name+' | '+str(self.consecutive)

@@ -7,6 +7,10 @@ class Query_Inventory:
 			code = data['code'],
 			name = data['name'].lower(),
 			quanty = data['quanty'],
+			metro = data['metros'],
+			und_static = data['und'],
+			metro_static = data['metros'],
+			und = data['und'],
 			tax = data['tax'],
 			cost = data['cost'],
 			price_1 = data['price_1'],
@@ -23,12 +27,14 @@ class Query_Inventory:
 		_data = {}
 		try:
 			company = Company.objects.get(pk = data['company'])
-			product = Inventory.objects.get( Q(code__contains = data['value']) | Q(name__icontains = data['value']), company = company )
+			product = Inventory.objects.get(pk = data['value'])
 			print(product.code)
 			_data = {
 					"code":product.code,
 					"name":product.name,
 					"quanty":product.quanty,
+					"metro":product.metro,
+					"und":product.und,
 					"tax":product.tax,
 					"cost":product.cost,
 					"price_1":product.price_1,
@@ -48,6 +54,8 @@ class Query_Inventory:
 				'code':i.code,
 				'name':i.name,
 				'quanty':i.quanty,
+				'und':i.und,
+				'metro':i.metro,
 				'tax':i.tax,
 				"cost":i.cost,
 				'price_1':i.price_1,
@@ -63,6 +71,7 @@ class Query_Inventory:
 		result = False
 		try:
 			inventory = Inventory.objects.get(company = Company.objects.get(pk = data['company']),pk = data['pk'])
+			print(inventory)
 		except Inventory.DoesNotExist as e:
 			print(e)
 			message = "El producto no existe"
@@ -73,6 +82,8 @@ class Query_Inventory:
 			inventory.tax = data['tax']
 			inventory.cost = data['cost']
 			inventory.quanty = data['quanty']
+			inventory.metro = data['metros']
+			inventory.und = data['und']
 			inventory.price_1 = data['price_1']
 			inventory.price_2 = data['price_2']
 			inventory.price_3 = data['price_3']

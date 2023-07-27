@@ -25,7 +25,11 @@ class Supplier(models.Model):
 class Inventory(models.Model):
 	code = models.CharField(max_length = 300)
 	name = models.CharField(max_length = 150)
-	quanty = models.IntegerField()
+	quanty = models.FloatField()
+	und = models.IntegerField(default = 0)
+	metro = models.IntegerField(default = 0)
+	und_static = models.IntegerField(default = 0)
+	metro_static = models.IntegerField(default = 0)
 	tax = models.IntegerField(default=0)
 	cost = models.FloatField()
 	price_1 = models.FloatField()
@@ -39,4 +43,6 @@ class Inventory(models.Model):
 
 	def __str__(self):
 		return self.name+' | '+self.company.name
+
+
 

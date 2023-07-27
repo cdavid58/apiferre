@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^data/', include('data.urls')),
     url(r'^settings/', include('settings.urls')),
     url(r'^shopping/', include('shopping.urls')),
+    url(r'^close_box/', include('close_box.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
